@@ -1,2 +1,2 @@
-# jaegerin
+# Jaegerin
 OTel Collector 
