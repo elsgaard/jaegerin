@@ -12,17 +12,6 @@ import (
 	"time"
 )
 
-// release is set through the linker at build time, generally from a git sha.
-// Used for logging and error reporting.
-// version, commit, date is set through the linker at build time, generally from a git sha.
-// Used for logging and error reporting.
-var (
-	release = "unknown"
-	version = "unknown"
-	commit  = "unknown"
-	date    = "unknown"
-)
-
 type Server struct {
 	address string
 	logger  *slog.Logger
@@ -59,7 +48,7 @@ func (s *Server) Start() error {
 
 	s.setupRoutes()
 
-	s.logger.Info("Starting HTTP/OTLP server", slog.String("version", commit), slog.String("address", s.address))
+	s.logger.Info("Starting HTTP/OTLP server", slog.String("address", s.address))
 	if err := s.server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		return fmt.Errorf("error starting server: %w", err)
 	}
@@ -68,7 +57,7 @@ func (s *Server) Start() error {
 
 // Stop the Server gracefully within the timeout.
 func (s *Server) Stop() error {
-	s.logger.Info("Stopping HTTP/OLTP server", slog.String("version", commit), slog.String("address", s.address))
+	s.logger.Info("Stopping HTTP/OLTP server", slog.String("address", s.address))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()

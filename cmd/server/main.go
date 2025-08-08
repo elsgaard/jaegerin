@@ -14,13 +14,22 @@ import (
 	"golang.org/x/sync/errgroup"
 )
 
+// release is set through the linker at build time, generally from a git sha.
+// Used for logging and error reporting.
+// version, commit, date is set through the linker at build time, generally from a git sha.
+// Used for logging and error reporting.
+var (
+	release = "unknown"
+	version = "unknown"
+	commit  = "unknown"
+	date    = "unknown"
+)
+
 func main() {
 	os.Exit(start())
 }
 
 func start() int {
-
-	//gob.Register(map[string]interface{}{})
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
 
